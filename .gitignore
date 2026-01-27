@@ -1,0 +1,16 @@
+# Python environment
+venv/
+env/
+
+# Databases
+db.sqlite3
+
+# Cache
+__pycache__/
+*.pyc
+
+# Local settings
+.env
+
+# Media/Uploads
+media/

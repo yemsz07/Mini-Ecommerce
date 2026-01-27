@@ -1,0 +1,37 @@
+<!-- shop/templates/staff/inventory.html -->
+{% extends 'staff/base.html' %}
+{% load static %}
+
+{% block title %}Inventory - FRANCE CORP.{% endblock %}
+
+{% block content %}
+<h1>Inventory Management</h1>
+<!-- Add your inventory-specific content here -->
+<div class="card">
+    <div class="card-body">
+        <table class="table table-hover border">
+            <thead class="table-light"></thead>
+            <tr>
+            <th>SKU</th>
+            <th>Product Name</th>
+            <th>Price</th>
+            <th>Image</th>
+            <th>Category</th>
+            <th>Stock</th>
+            <th>Status</th>
+        </tr>
+        <tbody>
+            {% for product in inventory_items %}
+                {% include 'staff/partials/product_row.html' %}
+            {% empty %}
+                <tr>
+                    <td colspan="7" class="text-center text-muted p-5">
+                        No products found.
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+</div>
+{% endblock %}

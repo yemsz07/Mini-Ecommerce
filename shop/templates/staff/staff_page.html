@@ -1,0 +1,42 @@
+{% extends 'staff/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Product Management</h2>
+    <button class="btn btn-success" 
+            hx-get="{% url 'get_new_row' %}" 
+            hx-target="#product-table-body" 
+            hx-swap="afterbegin">
+        + Add New Product
+    </button>
+</div>
+
+
+
+<table class="table table-hover border">
+    <thead class="table-light">
+        <tr>
+            <th>SKU</th>
+            <th>Product Name</th>
+            <th>Price</th>
+            <th>Image</th>
+            <th>Category</th>
+            <th>Stock</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody id="product-table-body">
+        {% for product in products %}
+            {% include 'staff/partials/product_row.html' %}
+        {% empty %}
+            <tr id="empty-row">
+                <td colspan="8" class="text-center text-muted p-5">
+                    No products found. Start adding now!
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,27 @@
+<tr>
+    <th scope="row">#{{ product.sku|default:"N/A" }}</th>
+    <td>{{ product.name }}</td>
+    <td>₱{{ product.price }}</td>
+    <td>
+        {% if product.image %}
+            <img src="{{ product.image.url }}" width="50" class="img-thumbnail">
+        {% else %}
+            <span class="text-muted">No Image</span>
+        {% endif %}
+    </td>
+    <td>{{ product.category.name }}</td>
+    <td>{{ product.stock }}</td>
+    <td>
+        <span class="badge bg-success">
+            Active
+        </span>
+    </td>
+<td class="p-3 border-b">
+    {% if request.path != '/inventory/' %}
+    <div class="flex items-center justify-center">
+        <input type="checkbox" 
+               class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500 cursor-pointer transition">
+    </div>
+    {% endif %}
+</td>
+</tr>
