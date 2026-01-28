@@ -155,3 +155,7 @@ AUTHENTICATION_BACKENDS = [
 
 
 SOCIALACCOUNT_LOGIN_ON_GET = True
+
+# Ito ang magsasabi sa Google login na bumalik sa Home page
+LOGIN_REDIRECT_URL = 'home_page'  # Gamitin ang name ng URL mo sa home
+LOGOUT_REDIRECT_URL = 'home_page'

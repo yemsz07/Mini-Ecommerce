@@ -2,6 +2,15 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+
+        <style>
+            .sidebar-border {
+                border-right: 1px solid #dee2e6;
+                min-height: 100vh; /* Ginawang min-height para sumunod sa haba ng content */
+                padding-top: 2rem;
+            }
+        </style>
+
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
@@ -32,13 +41,9 @@
                                 <li><a class="dropdown-item" href="#!">Popular Items</a></li>
                                 <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
                             </ul>
-                        <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'register_page' %}active{% endif %}" href="{% url 'register_page' %}">Register</a></li>
+                        <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'register_page' %}active{% endif %}" href="{% url 'register_page' %}">Sign up</a></li>
                         </li>
-                    </ul>
-                    
-                    
-                    
-                    
+                    </ul>                   
                     <form class="d-flex">
                         <button class="btn btn-outline-dark" type="submit">
                             <i class="bi-cart-fill me-1"></i>
@@ -50,21 +55,43 @@
             </div>
         </nav>
         <!-- Header-->
-        <header class="bg-dark py-5">
-            <div class="container px-4 px-lg-5 my-5">
+        <header class="bg-dark py-3">
+            <div class="container px-4 px-lg-5 my-2">
                 <div class="text-center text-white">
-                    <h1 class="display-4 fw-bolder">Shop in style</h1>
+                    <h1 class="display-5 fw-bolder">Shop in style</h1>
                     <p class="lead fw-normal text-white-50 mb-0">With this shop hompeage template</p>
                 </div>
             </div>
         </header>
         <!-- Section-->
+
+        <div class="container-fluid">
+    <div class="row">
+
+        <div class="container-fluid">
+    <div class="row">
         
+        <div class="col-md-3 col-lg-2 sidebar-border">
+            <h5 class="ms-3 mb-4 mt-2">Categories</h5>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active" href="{% url 'home_page' %}">All Products</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Laptops</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Accessories</a>
+                </li>
+            </ul>
+        </div>
 
 
-        {% block content %}
-        {% endblock %}
-
+        
+        <div class="col-md-9 col-lg-10">
+            {% block content %}
+            {% endblock %}
+        </div>
 
         <!-- Footer-->
         <footer class="py-5 bg-dark">

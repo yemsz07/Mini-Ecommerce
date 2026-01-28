@@ -1,8 +1,10 @@
+from itertools import product
 import logging
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Product, Category
 from .staff_forms import Staff_view_Product
+
 
 # Set up logging
 logger = logging.getLogger(__name__)
@@ -54,6 +56,8 @@ def staff_crud(request):
         return HttpResponse(form.errors.as_json(), status=400)
     
     return HttpResponse("Method not allowed", status=405)
+
+
 
 def bulk_delete(request):
     if request.method == "POST":
