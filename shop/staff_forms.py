@@ -1,10 +1,12 @@
 from django import forms
-from .models import Product
+from .models import Product, Category
 
 class Staff_view_Product(forms.ModelForm):
+    category = forms.ModelChoiceField(queryset=Category.objects.all(), empty_label="Select Category")
+    
     class Meta:
         model = Product
-        fields = ['name', 'price', 'stock', 'image']  # Removed sku as it's auto-generated
+        fields = ['name', 'price', 'stock', 'image', 'category']  # Added category here
     def clean_price(self):
         price = self.cleaned_data['price']
         if price <= 0:
@@ -38,4 +40,7 @@ class Staff_view_Product(forms.ModelForm):
         self.fields['image'].widget.attrs.update({
             'class': 'form-control form-control-sm',
             'accept': 'image/*'
+        })
+        self.fields['category'].widget.attrs.update({
+            'class': 'form-select form-select-sm'
         })

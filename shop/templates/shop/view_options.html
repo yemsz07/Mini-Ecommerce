@@ -1,0 +1,207 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>France Corp. | {{ product.name }}</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet" />
+
+    <style>
+        :root { --corp-navy: #0f172a; --corp-blue: #0284c7; }
+        body { background-color: #f8fafc; font-family: sans-serif; }
+        
+        /* Navbar Styling - custom styles para sa navigation bar */
+        .navbar { background-color: white !important; border-bottom: 1px solid #eee; }
+        .navbar-brand { font-weight: 800; color: #1e293b !important; }
+        .navbar-brand span { color: #0284c7; }
+        
+        /* Product Container - styling para sa product image container */
+        .product-box { background: white; border-radius: 12px; padding: 40px; min-height: 500px; display: flex; align-items: center; justify-content: center; }
+        .product-box img { max-width: 100%; height: auto; }
+
+        /* Quantity Logic Design - styling para sa quantity input controls */
+        .qty-input { max-width: 120px; border: 1px solid #ddd; border-radius: 4px; overflow: hidden; }
+        .qty-input input { border: none; text-align: center; width: 50px; font-weight: bold; }
+        .qty-btn { background: white; border: none; padding: 5px 10px; cursor: pointer; }
+        .qty-btn:hover { background: #f0f0f0; }
+
+        /* Buttons from screenshot - custom styling para sa Buy Now at Add to Cart buttons */
+        .btn-buy { background-color: #2563eb; color: white; border-radius: 50px; padding: 12px 60px; font-weight: 600; border: none; transition: 0.3s; }
+        .btn-buy:hover { background-color: #1d4ed8; transform: translateY(-2px); }
+        .btn-cart { background-color: white; color: #333; border: 1px solid #333; border-radius: 50px; padding: 12px 40px; font-weight: 500; transition: 0.3s; }
+        .btn-cart:hover { background-color: #f8f9fa; transform: translateY(-2px); }
+
+        /* Navbar Cart Badge - styling para sa cart icon sa navbar (image_5e0860.jpg reference) */
+        .cart-status { border: 1px solid #333; border-radius: 50px; padding: 4px 12px; display: flex; align-items: center; text-decoration: none; color: black; }
+    </style>
+</head>
+<body>
+
+    <!-- Top banner - welcome message at delivery info -->
+    <div class="bg-dark text-white py-1 text-center small" style="font-size: 11px;">
+        <div class="container d-flex justify-content-between">
+            <span>Welcome to France Corp. Official Store</span>
+            <span><i class="bi bi-truck"></i> Fast Delivery Nationwide</span>
+        </div>
+    </div>
+
+    <!-- Navigation bar - may links sa iba't ibang pages -->
+    <nav class="navbar navbar-expand-lg sticky-top py-3">
+        <div class="container">
+            <!-- Link na bumalik sa base page (home) -->
+            <a class="navbar-brand" href="{% url 'base' %}">FRANCE <span>CORP.</span></a>
+            
+            <div class="d-flex align-items-center ms-auto">
+                <a href="#" class="nav-link mx-2 small fw-bold">About</a>
+                <!-- Link na pupunta sa logout_user view sa views.py -->
+                <a href="{% url 'logout_user' %}" class="nav-link mx-2 small fw-bold text-danger">Logout</a>
+                
+                <!-- Cart badge na nag-show ng cart count - cart_count galing sa view_options() sa views.py -->
+                <a href="{% url 'cart_view' %}" class="cart-status ms-2">
+                    <i class="bi bi-cart3"></i>
+                    <!-- cart_count - galing sa CartService.get_cart_count() sa views.py -->
+                    <span class="badge bg-dark rounded-pill ms-2">{{ cart_count|default:0 }}</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header section - title at subtitle sa product page -->
+    <div class="py-5 text-center text-white shadow-sm" style="background: linear-gradient(to right, #0f172a, #1e293b);">
+        <h1 class="fw-bold">Elevate Your Lifestyle</h1>
+        <p class="text-white-50">Premium curation by France Corp.</p>
+    </div>
+
+    <div class="container my-5">
+        <!-- Django messages framework - nag-show ng success/error messages -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success alert-dismissible fade show rounded-pill px-4 mb-4 shadow-sm" role="alert">
+                    <i class="bi bi-check-circle-fill me-2"></i> {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="row g-5">
+            <div class="col-md-6">
+                <!-- Product image container - nag-display ng product image -->
+                <div class="product-box shadow-sm">
+                    <!-- product.image.url - galing sa Product model image field -->
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <!-- Breadcrumb navigation - nag-show ng product category -->
+                <nav class="small mb-2">
+                    <a href="#" class="text-decoration-none text-muted">Home</a> / 
+                    <!-- product.category.name - galing sa Category model name field -->
+                    <span class="text-uppercase fw-bold text-muted">{{ product.category.name }}</span>
+                </nav>
+
+                <!-- Product name - galing sa Product model name field -->
+                <h1 class="fw-bold text-dark mb-1" style="font-size: 2.8rem;">{{ product.name }}</h1>
+                <!-- Product SKU - galing sa Product model sku field -->
+                <p class="text-muted small">SKU: {{ product.sku }}</p>
+                
+                <!-- Product price - galing sa Product model price field -->
+                <h2 class="text-danger fw-bold my-4" style="font-size: 2.2rem;">₱{{ product.price }}</h2>
+
+                <div class="mb-4">
+                    <h6 class="fw-bold small">Quick Description:</h6>
+                    <!-- Product description - galing sa Product model description field -->
+                    <p class="text-secondary small">{{ product.description }}</p>
+                    <!-- Stock availability - product.stock galing sa Product model stock field -->
+                    <div class="text-success small fw-bold mt-2">
+                        <i class="bi bi-check-circle-fill"></i>
+                        In Stock ({{ product.stock }} units available)
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="fw-bold small mb-2">Quantity:</label>
+                    <div class="d-flex align-items-center">
+                        <!-- Quantity input controls - JavaScript controlled -->
+                        <div class="qty-input d-flex align-items-center shadow-sm">
+                            <!-- Button para magdecrease ng quantity -->
+                            <button class="qty-btn" type="button" onclick="changeQty(-1)">-</button>
+                            <!-- Quantity input field - max attribute galing sa product.stock -->
+                            <input type="number" id="quantity" name="quantity" value="1" min="1" max="{{ product.stock }}" readonly>
+                            <!-- Button para magincrease ng quantity -->
+                            <button class="qty-btn" type="button" onclick="changeQty(1)">+</button>
+                        </div>
+                    </div>
+                    <!-- Available stock display -->
+                    <p class="text-muted extra-small mt-2" style="font-size: 11px;">Available: {{ product.stock }} units</p>
+                </div>
+
+                <div class="d-flex gap-3 mt-5">
+                    <!-- Buy Now form - pupunta sa process_purchase view -->
+                    <form method="POST" action="{% url 'process_purchase' product.id %}" class="d-inline">
+                        {% csrf_token %}
+                        <!-- Hidden input para sa quantity - pupunta sa views.py -->
+                        <input type="hidden" name="quantity" value="1" id="purchase-quantity">
+                        <!-- Buy Now button -->
+                        <button type="submit" class="btn btn-buy shadow-sm">
+                            <i class="bi bi-lightning-fill me-1"></i> Buy Now
+                        </button>
+                    </form>
+                    <!-- Add to Cart form - pupunta sa add_to_cart view -->
+                    <form method="POST" action="{% url 'add_to_cart' product.id %}" class="d-inline">
+                        {% csrf_token %}
+                        <!-- Hidden input para sa quantity - pupunta sa views.py -->
+                        <input type="hidden" name="quantity" value="1" id="cart-quantity">
+                        <!-- Add to Cart button -->
+                        <button type="submit" class="btn btn-cart shadow-sm">
+                            <i class="bi bi-cart-plus me-2"></i> Add to Cart
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   <!-- JavaScript para sa quantity controls at form synchronization -->
+   <script>
+    // Get DOM elements
+    const qtyInput = document.getElementById('quantity');
+    const purchaseQtyInput = document.getElementById('purchase-quantity');
+    const cartQtyInput = document.getElementById('cart-quantity');
+    // Get max stock from product.stock attribute
+    const maxStock = parseInt(qtyInput.getAttribute('max'));
+
+    // Function para mag-change ng quantity
+    function changeQty(amt) {
+        let currentQty = parseInt(qtyInput.value);
+        let nextQty = currentQty + amt;
+
+        // Validate quantity bounds (1 to maxStock)
+        if (nextQty >= 1 && nextQty <= maxStock) {
+            qtyInput.value = nextQty;
+            // Sync quantity to both forms (Buy Now at Add to Cart)
+            purchaseQtyInput.value = nextQty;
+            cartQtyInput.value = nextQty;
+            console.log(`DEBUG: Quantity changed to ${nextQty}`);
+        } else {
+            console.log(`DEBUG: Invalid quantity. Current: ${currentQty}, Change: ${amt}, Max: ${maxStock}`);
+        }
+    }
+
+    // Initialize form quantities on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        const initialQty = parseInt(qtyInput.value);
+        // Set initial quantity sa both hidden inputs
+        purchaseQtyInput.value = initialQty;
+        cartQtyInput.value = initialQty;
+        console.log(`DEBUG: Initial quantity set to ${initialQty}`);
+    });
+</script>
+
+    <!-- Bootstrap JavaScript bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

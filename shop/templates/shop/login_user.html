@@ -1,0 +1,224 @@
+
+{% load static %}
+{% load socialaccount %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>France Corp. | Premium E-Commerce</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet" />
+
+    <style>
+
+    .bi-emoji-sunglasses-fill {
+        display: block;      /* Kailangan ito para gumana ang margin auto */
+        margin-left: auto;   /* Itutulak mula kaliwa */
+        margin-right: auto;  /* Itutulak mula kanan */
+        font-size: 1.5rem;
+    }   
+
+        /* Pinipilit ang image na maging square at pantay lahat */
+    .card-img-container {
+        width: 100%;
+        padding-top: 100%; /* 1:1 Aspect Ratio */
+        position: relative;
+        overflow: hidden; /* tinatago yung mga sobrang text */
+        background-color: #f8f9fa;
+    }
+
+    .card-img-container img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: contain; /* Para hindi ma-stretch ang image, "cover" kung gusto mo walang puti sa gilid */
+        padding: 10px; /* Optional: para may space sa gilid ng image */
+    }
+
+    /* Nililimitahan ang pangalan ng product sa 2 lines para pantay ang price section */
+    .product-name {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        height: 3rem; /* Adjust based on font size */
+        margin-bottom: 0.5rem;
+    }
+
+    .card-body {
+        min-height: 80px;
+        padding: 10px;
+    }
+
+
+        /* FRANCE CORP. CUSTOM STYLES */
+        :root { --corp-navy: #0f172a; --corp-blue: #0284c7; }
+        body { background-color: #f8fafc; min-height: 100vh; display: flex; flex-direction: column; }
+        
+        .navbar-brand { font-weight: 800; letter-spacing: 1px; }
+        .sticky-nav { box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+
+        /* Sidebar Styling */
+        .sidebar-border {
+            background-color: white;
+            border-right: 1px solid #e2e8f0;
+            padding: 2rem 1rem;
+            min-height: 100vh;
+        }
+        .nav-link-corp {
+            color: #64748b; padding: 0.7rem 1rem; border-radius: 8px;
+            text-decoration: none; display: block; transition: 0.2s; font-size: 0.9rem;
+        }
+        .nav-link-corp:hover, .nav-link-corp.active { background-color: #f1f5f9; color: var(--corp-blue); font-weight: 600; }
+
+        /* Product Image Fix */
+        .card-img-container { width: 100%; padding-top: 100%; position: relative; overflow: hidden; background: white; }
+        .card-img-container img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; padding: 10px; }
+        
+        /* Product Name Fix */
+        .product-name { display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 2.8rem; font-size: 0.85rem; line-height: 1.4; }
+        
+        footer { margin-top: auto; }
+    </style>
+</head>
+<body>
+
+    <div class="py-1 bg-dark text-white w-100 shadow-sm" style="font-size: 0.7rem;">
+        <div class="container d-flex justify-content-between px-4">
+            <span>Welcome to France Corp. Official Store</span>
+            <span><i class="bi bi-truck me-1"></i> Fast Delivery Nationwide</span>
+        </div>
+    </div>
+
+    <!-- Navigation bar na may links sa iba't ibang pages -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top sticky-nav">
+        <div class="container px-4">
+            <!-- Link na bumalik sa base page (home) -->
+            <a class="navbar-brand text-dark" href="{% url 'base' %}">
+                <i class="bi bi-layers-half text-primary"></i> FRANCE <span class="text-primary">CORP.</span>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <form class="d-flex mx-auto w-50 my-2 my-lg-0">
+                    <div class="input-group">
+                        <input class="form-control border-end-0 rounded-start-pill bg-light" type="search" placeholder="Search products...">
+                        <button class="btn btn-light border-start-0 rounded-end-pill" type="submit"><i class="bi bi-search text-muted"></i></button>
+                    </div>
+                </form>
+
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <!-- Link na pupunta sa about_page -->
+                    <li class="nav-item"><a class="nav-link fw-bold text-primary" href="{% url 'about_page' %}">About</a></li>
+                    <!-- Link na pupunta sa register_page -->
+                    <li class="nav-item"><a class="nav-link fw-bold text-primary" href="{% url 'register_page' %}">Sign Up</a></li>
+                    <!-- Check kung user ay naka-login o hindi -->
+                    {% if not user.is_authenticated %}
+                        <!-- Link na pupunta sa login_user page -->
+                        <li class="nav-item"><a class="nav-link fw-bold text-primary" href="{% url 'login_user' %}">Login</a></li>
+                    {% else %}
+                        <li class="nav-item">
+                            <!-- Form na pupunta sa logout_user view -->
+                            <form method="post" action="{% url 'logout_user' %}" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-link nav-link text-danger border-0">Logout</button>
+                            </form>
+                        </li>
+                    {% endif %}
+                    <li class="nav-item ms-lg-2">
+                        <button class="btn btn-outline-dark rounded-pill px-3 shadow-sm">
+                            <i class="bi-cart-fill me-1"></i> <span class="badge bg-dark text-white rounded-pill">0</span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header na may background gradient at title -->
+    <header class="py-4 shadow-sm" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);">
+        <div class="container px-4 text-center text-white">
+            <h1 class="display-6 fw-bold">Elevate Your Lifestyle</h1>
+            <p class="lead fw-light text-white-50 small mb-0">Premium curation by France Corp.</p>
+        </div>
+    </header>
+        <br><br><br>
+
+        <!-- Django form errors - nag-show ng validation errors -->
+        {% if form.errors %}
+            <div class="alert alert-danger p-2 mb-3" style="font-size: 0.8rem; border-radius: 8px;">
+                 <ul class="mb-0 list-unstyled">
+                    <!-- Loop through form field errors -->
+                    {% for field in form %}
+                        {% if field.errors %}
+                            <li><i class="bi bi-x-circle-fill me-1"></i> {{ field.label }}: {{ field.errors|striptags }}</li>
+                        {% endif %}
+                    {% endfor %}
+                    <!-- Loop through non-field errors -->
+                    {% for error in form.non_field_errors %}
+                        <li><i class="bi bi-x-circle-fill me-1"></i> {{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+        <!-- Form na pupunta sa login_user view sa views.py -->
+        <form method="post" action="{% url 'login_user' %}">
+            {% csrf_token %}
+            <div class="border border-dark rounded p-4 mx-auto" style="width: 500px;">
+            <div class="mb-3 container">
+                <svg class="bi bi-emoji-sunglasses-fill" style="width: 40px; height: 40px;" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16M2.31 5.243A1 1 0 0 1 3.28 4H6a1 1 0 0 1 1 1v.116A4.2 4.2 0 0 1 8 5c.35 0 .69.04 1 .116V5a1 1 0 0 1 1-1h2.72a1 1 0 0 1 .97 1.243l-.311 1.242A2 2 0 0 1 11.439 8H11a2 2 0 0 1-1.994-1.839A3 3 0 0 0 8 6c-.393 0-.74.064-1.006.161A2 2 0 0 1 5 8h-.438a2 2 0 0 1-1.94-1.515zM4.969 9.75A3.5 3.5 0 0 0 8 11.5a3.5 3.5 0 0 0 3.032-1.75.5.5 0 1 1 .866.5A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1-3.898-2.25.5.5 0 0 1 .866-.5z"/>
+                </svg>
+                <br><br>
+                <!-- Input field para sa username/email/phone - name="username" para makuha sa views.py -->
+                <input type="email" name="username" class="form-control" id="exampleInputEmail1" placeholder="Enter email/Phone/Username" required>
+
+            </div>
+            <div class="mb-3 container">
+                <!-- Input field para sa password - name="password" para makuha sa views.py -->
+                <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Enter password" required>
+            </div>
+            <div class="mb-3 form-check container">
+                <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                <label class="form-check-label" for="exampleCheck1">Check me out</label>
+            </div>
+    
+            <!-- Submit button para mag-login -->
+            <button type="submit" class="btn btn-primary align-self-center w-100 shadow-sm">Submit</button>
+            
+            <br><br>
+            <div class="text-center mb-3">
+            <span class="text-muted small">Or continue with</span>
+            </div>
+
+            <div class="row g-2 mb-4">
+            <div class="col-12"> 
+                <!-- Google OAuth login link -->
+                <a href="{% provider_login_url 'google' %}" class="btn btn-outline-secondary w-100 d-flex align-items-center justify-content-center py-2">
+                    <svg class="me-2" style="width: 20px; height: 20px;" viewBox="0 0 24 24">
+                      <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                      <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                      <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                      <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                    </svg>
+                    <span class="small fw-medium">Google Login</span>
+                  </a>
+            </div>
+
+            </div>
+
+            
+            
+        </form>
+
+    </body>
+</html>

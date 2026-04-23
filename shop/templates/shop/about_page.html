@@ -1,0 +1,154 @@
+{% load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>France Corp. | Premium E-Commerce</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet" />
+
+    <style>
+
+        /* Pinipilit ang image na maging square at pantay lahat */
+    .card-img-container {
+        width: 100%;
+        padding-top: 100%; /* 1:1 Aspect Ratio */
+        position: relative;
+        overflow: hidden; /* tinatago yung mga sobrang text */
+        background-color: #f8f9fa;
+    }
+
+    .card-img-container img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: contain; /* Para hindi ma-stretch ang image, "cover" kung gusto mo walang puti sa gilid */
+        padding: 10px; /* Optional: para may space sa gilid ng image */
+    }
+
+    /* Nililimitahan ang pangalan ng product sa 2 lines para pantay ang price section */
+    .product-name {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        height: 3rem; /* Adjust based on font size */
+        margin-bottom: 0.5rem;
+    }
+
+    .card-body {
+        min-height: 80px;
+        padding: 10px;
+    }
+
+
+        /* FRANCE CORP. CUSTOM STYLES */
+        :root { --corp-navy: #0f172a; --corp-blue: #0284c7; }
+        body { background-color: #f8fafc; min-height: 100vh; display: flex; flex-direction: column; }
+        
+        .navbar-brand { font-weight: 800; letter-spacing: 1px; }
+        .sticky-nav { box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+
+        /* Sidebar Styling */
+        .sidebar-border {
+            background-color: white;
+            border-right: 1px solid #e2e8f0;
+            padding: 2rem 1rem;
+            min-height: 100vh;
+        }
+        .nav-link-corp {
+            color: #64748b; padding: 0.7rem 1rem; border-radius: 8px;
+            text-decoration: none; display: block; transition: 0.2s; font-size: 0.9rem;
+        }
+        .nav-link-corp:hover, .nav-link-corp.active { background-color: #f1f5f9; color: var(--corp-blue); font-weight: 600; }
+
+        /* Product Image Fix */
+        .card-img-container { width: 100%; padding-top: 100%; position: relative; overflow: hidden; background: white; }
+        .card-img-container img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; padding: 10px; }
+        
+        /* Product Name Fix */
+        .product-name { display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 2.8rem; font-size: 0.85rem; line-height: 1.4; }
+        
+        footer { margin-top: auto; }
+    </style>
+</head>
+<body>
+
+    <div class="py-1 bg-dark text-white w-100 shadow-sm" style="font-size: 0.7rem;">
+        <div class="container d-flex justify-content-between px-4">
+            <span>Welcome to France Corp. Official Store</span>
+            <span><i class="bi bi-truck me-1"></i> Fast Delivery Nationwide</span>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top sticky-nav">
+        <div class="container px-4">
+            <a class="navbar-brand text-dark" href="{% url 'base' %}">
+                <i class="bi bi-layers-half text-primary"></i> FRANCE <span class="text-primary">CORP.</span>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <form class="d-flex mx-auto w-50 my-2 my-lg-0">
+                    <div class="input-group">
+                        <input class="form-control border-end-0 rounded-start-pill bg-light" type="search" placeholder="Search products...">
+                        <button class="btn btn-light border-start-0 rounded-end-pill" type="submit"><i class="bi bi-search text-muted"></i></button>
+                    </div>
+                </form>
+
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link fw-bold text-primary" href="{% url 'about_page' %}">About</a></li>
+                    
+                    <li class="nav-item"><a class="nav-link fw-bold text-primary" href="{% url 'register_page' %}">Sign Up</a></li>
+                    {% if not user.is_authenticated %}
+                    <li class="nav-item"><a class="nav-link fw-bold text-primary" href="{% url 'login_user' %}">Login</a></li>
+                    {% else %}
+                        <li class="nav-item">
+                            <form method="post" action="{% url 'logout_user' %}" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-link nav-link text-danger border-0">Logout</button>
+                            </form>
+                        </li>
+                    {% endif %}
+                    <li class="nav-item ms-lg-2">
+                        <button class="btn btn-outline-dark rounded-pill px-3 shadow-sm">
+                            <i class="bi-cart-fill me-1"></i> <span class="badge bg-dark text-white rounded-pill">0</span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <header class="py-4 shadow-sm" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);">
+        <div class="container px-4 text-center text-white">
+            <h1 class="display-6 fw-bold">Elevate Your Lifestyle</h1>
+            <p class="lead fw-light text-white-50 small mb-0">Premium curation by France Corp.</p>
+        </div>
+    </header>
+
+
+<h1 class="text-center">About Us</h1>
+
+
+<h2 class="text-center">Who We Are</h2><br><br><br><br>
+<p class="text-center">
+Welcome to France Corp., your number one source for all things quality and style. We're dedicated to giving you the very best of products, with a focus on dependability, customer service, and uniqueness.
+<br><br >
+Founded in 2024, our mission is simple: to provide high-quality items that make your life easier and more stylish. We believe that shopping should be an experience, not a chore, which is why we’ve curated a collection that meets the highest standards.
+<br><br>
+We hope you enjoy our products as much as we enjoy offering them to you. If you have any questions or comments, please don't hesitate to contact us.
+</p>
+
+
+</body>
+</html>

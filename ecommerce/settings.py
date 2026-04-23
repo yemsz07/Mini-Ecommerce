@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -149,6 +152,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 AUTHENTICATION_BACKENDS = [
+    'shop.backend.EmailBackend',
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
@@ -157,5 +161,57 @@ AUTHENTICATION_BACKENDS = [
 SOCIALACCOUNT_LOGIN_ON_GET = True
 
 # Ito ang magsasabi sa Google login na bumalik sa Home page
-LOGIN_REDIRECT_URL = 'home_page'  # Gamitin ang name ng URL mo sa home
-LOGOUT_REDIRECT_URL = 'home_page'
+LOGIN_REDIRECT_URL = 'base'  # Gamitin ang name ng URL mo sa home
+LOGOUT_REDIRECT_URL = 'base'
+
+AUTH_USER_MODEL = 'shop.Customer' # Palitan ang 'shop' kung iba ang app name mo
+
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+            'client_id': os.getenv('GOOGLE_CLIENT_ID'),
+            'secret': os.getenv('GOOGLE_CLIENT_SECRET'),
+            'key': ''
+        }
+    }
+}
+
+
+# Bagong syntax para sa Allauth v6.0+
+ACCOUNT_LOGIN_METHODS = {'username', 'email'}
+
+# Dito na pinagsama-sama ang email, username, at passwords
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'username*', 'password1*', 'password2*']
+
+# Panatilihin mo ito dahil kailangan ito para sa Custom User
+ACCOUNT_USER_MODEL_USERNAME_FIELD = 'username'
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': 'errors.log', # Dito isusulat lahat ng error
+            
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+    },
+}
+
+CART_SESSION_ID = 'cart'
